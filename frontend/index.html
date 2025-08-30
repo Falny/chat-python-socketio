@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Chat</title>
+  </head>
+  <body>
+    <div class="form">
+      <div class="form-text">Enter your name</div>
+      <input type="text" class="name" />
+      <button class="btn-enter">Continue</button>
+    </div>
+  </body>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    let field = document.querySelector(".name");
+    let btn = document.querySelector(".btn-enter");
+    let socket = io("http://localhost:5000");
+
+    btn.addEventListener("click", sendField);
+
+    function sendField() {
+      socket.emit("name", field.value);
+      field.value = "";
+
+      socket.on("return_token", (data) => {
+        window.location.href = `./app/index.html?token=${data}`;
+      });
+    }
+  </script>
+</html>
